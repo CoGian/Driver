@@ -30,7 +30,7 @@ def bfs_search(initial_state, method):
 
         children = state.expand()
         nodes = nodes + 1
-        print(nodes)
+
         for child in children:
             "check for duplicates in frontier and explored"
 
@@ -66,7 +66,7 @@ def dfs_search(initial_state, method):
         children = state.expand()
         children = children[::-1]
         nodes = nodes + 1
-        print(nodes)
+
         for child in children:
             "check for duplicates in frontier and explored"
 
@@ -111,7 +111,7 @@ def A_star_search(initial_state, method):
         children = state[1].expand()
 
         nodes = nodes + 1
-        print(nodes)
+
         for child in children:
             "check for duplicates in frontier and explored"
             child.key = child.cost + calculate_manhattan_score(child)
@@ -123,11 +123,7 @@ def A_star_search(initial_state, method):
                 heapq.heappush(frontier.heap, entry)
 
             elif child.config in entry_finder and child.key < entry_finder[child.config][0]:
-                print(child.config)
-                print(entry_finder[child.config][1].config)
 
-                print(child.key)
-                print(entry_finder[child.config][1].key)
                 index = frontier.heap.index((entry_finder[child.config][1].key, entry_finder[child.config][1]))
 
                 frontier.heap[int(index)] = entry
