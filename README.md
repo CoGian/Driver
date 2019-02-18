@@ -41,9 +41,15 @@ python driver_3.py ast 8,6,4,2,1,3,5,7,0
 output:
 
 path_to_goal: ['Left', 'Up', 'Up', 'Left', 'Down', 'Right', 'Down', 'Left', 'Up', 'Right', 'Right', 'Up', 'Left', 'Left', 'Down', 'Right', 'Right', 'Up', 'Left', 'Down', 'Down', 'Right', 'Up', 'Left', 'Up', 'Left']
+
 cost_of_path: 26
+
 nodes_expanded: 1931
+
 search_depth: 26
+
 max_search_depth: 26
+
 running_time: 0.8507583141326904
+
 max_ram_usage: 16142336
