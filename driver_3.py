@@ -2,7 +2,7 @@ import heapq
 import time
 import sys
 import math
-from puzze_state import PuzzleState
+from puzzle_state import PuzzleState
 from custom_classes import Frontier, Explored
 
 
