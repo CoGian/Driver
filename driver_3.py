@@ -19,9 +19,6 @@ def bfs_search(initial_state, method):
     while frontier.queue:
         state = frontier.queue.popleft()
         explored.set.add(state.config)
-
-        if max_depth < state.cost:
-            max_depth += 1
         if test_goal(state):
             print("SUCCESS")
             return state, nodes, max_depth
@@ -33,8 +30,9 @@ def bfs_search(initial_state, method):
 
         for child in children:
             "check for duplicates in frontier and explored"
-
-            if child not in frontier and child.config not in explored.set:
+            if max_depth < child.cost:
+                max_depth += 1
+            if child.config not in explored.set and child not in frontier:
                 frontier.queue.append(child)
     print('FAILURE')
     exit()
@@ -69,8 +67,9 @@ def dfs_search(initial_state, method):
 
         for child in children:
             "check for duplicates in frontier and explored"
-
-            if child not in frontier and child.config not in explored.set:
+            if max_depth < child.cost:
+                max_depth += 1
+            if child.config not in explored.set and child not in frontier:
                 frontier.stack.append(child)
     print('FAILURE')
     exit()
@@ -99,8 +98,6 @@ def A_star_search(initial_state, method):
         del entry_finder[state[1].config]
         explored.set.add(state[1].config)
 
-        if max_depth < state[1].cost:
-            max_depth += 1
 
         if test_goal(state[1]):
             print("SUCCESS")
@@ -115,6 +112,8 @@ def A_star_search(initial_state, method):
         for child in children:
             "check for duplicates in frontier and explored"
             child.key = child.cost + calculate_manhattan_score(child)
+            if max_depth < child.cost:
+                max_depth += 1
 
             entry = (child.key, child)
             if child.config not in explored.set and child not in frontier:
