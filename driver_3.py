@@ -39,7 +39,6 @@ def bfs_search(initial_state, method):
 
 
 def dfs_search(initial_state, method):
-
     """DFS search"""
 
     frontier = Frontier(method)
@@ -75,12 +74,11 @@ def dfs_search(initial_state, method):
     exit()
 
 
-def A_star_search(initial_state, method):
-
+def a_star_search(initial_state, method):
     """A * search"""
 
-    frontier = Frontier(method) #  list of entries arranged in a heap
-    entry_finder = {}  #  mapping of states to entries
+    frontier = Frontier(method)  # list of entries arranged in a heap
+    entry_finder = {}  # mapping of states to entries
 
     initial_state.key = calculate_manhattan_score(initial_state)
     entry = (initial_state.key, initial_state)
@@ -97,7 +95,6 @@ def A_star_search(initial_state, method):
         state = heapq.heappop(frontier.heap)
         del entry_finder[state[1].config]
         explored.set.add(state[1].config)
-
 
         if test_goal(state[1]):
             print("SUCCESS")
@@ -135,14 +132,13 @@ def A_star_search(initial_state, method):
 
 
 def calculate_manhattan_dist(idx, value, n):
-
     """calculate the manhattan distance of a tile"""
 
     row, col = idx // n, idx % n
 
     goal_row, goal_col = value // n, value % n
 
-    return abs(row-goal_row) + abs(col-goal_col)
+    return abs(row - goal_row) + abs(col - goal_col)
 
 
 def calculate_manhattan_score(state):
@@ -167,7 +163,6 @@ def calculate_path_to_goal(state):
 
 
 def test_goal(puzzle_state):
-
     """test the state is the goal state or not"""
     goal_config = (0, 1, 2, 3, 4, 5, 6, 7, 8)
     if puzzle_state.config == goal_config:
@@ -175,8 +170,7 @@ def test_goal(puzzle_state):
     return False
 
 
-def write_in_file(goal_state, nodes, running_time , max_depth):
-
+def write_in_file(goal_state, nodes, running_time, max_depth):
     f = open('output.txt', 'w+')
     f.write("path_to_goal: " + calculate_path_to_goal(goal_state) + "\n")
     f.write("cost_of_path: " + str(goal_state.cost) + "\n")
@@ -199,8 +193,25 @@ def calculate_max_ram_usage():
         return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
 
 
-def main():
+def is_solvable(config):
+    """Check if initial state is solvable"""
+    inversions = 0
 
+    for i, item in enumerate(config):
+        if item != 0:
+            for j in range(i, len(config)):
+                if item > config[j] != 0:
+                    inversions += 1
+
+    if inversions % 2 == 0:
+        print("It's solvable")
+        return True
+    else:
+        print("It's unsolvable")
+        return False
+
+
+def main():
     sm = sys.argv[1].lower()
 
     begin_state = sys.argv[2].split(",")
@@ -212,6 +223,8 @@ def main():
     hard_state = PuzzleState(begin_state, size)
 
     start_time = time.time()
+    if not is_solvable(hard_state.config):
+        exit()
     if sm == "bfs":
 
         goal_state, nodes, max_depth = bfs_search(hard_state, sm)
@@ -224,12 +237,12 @@ def main():
 
     elif sm == "ast":
 
-        goal_state, nodes, max_depth = A_star_search(hard_state, sm)
+        goal_state, nodes, max_depth = a_star_search(hard_state, sm)
         write_in_file(goal_state, nodes, time.time() - start_time, max_depth)
     else:
 
         print("Enter valid command arguments !")
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     main()
